@@ -12,7 +12,7 @@ embedding_dim = 64
 epochs = 10
 batch_size = 64
 generated_length = 100
-folder_path = "C:/Users/vaibh/Documents/GitHub/Music-Generator-Using-Neural-Networks/Classic"  # Replace with the path to your folder
+folder_path = "C:/Users/vaibh/Documents/GitHub/Music-Generator-Using-Neural-Networks/MIDI files (Genre)/Classic"  # Replace with the path to your folder
 
 # Preprocess MIDI files
 def midi_to_sequence(midi_file, sequence_length):
