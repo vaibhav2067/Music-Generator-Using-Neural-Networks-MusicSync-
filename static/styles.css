@@ -1,0 +1,110 @@
+*{
+    overflow: hidden;
+}
+
+
+body{
+    background-color: #F7FAEF;
+}
+
+h1{
+    /* font-weight: bold; */
+    font-size: 3rem;
+    margin: 80px ;
+    font-family: "ADLaM Display", system-ui;
+    font-weight: 400;
+    font-style: normal
+}
+
+.container{
+    border: 2px solid black;
+    margin: 0px 260px;
+    background-color: #e0edbdad ;
+    border-radius: 16px;
+    backdrop-filter: blur(5px);
+}
+
+#musicForm{
+    margin: 0px 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 18px;
+    color: #3b4032;
+    margin-bottom: 5px;
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #707070;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #e7f1cd;
+    color: #424636;
+    font-size: 18px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #50e785;
+}
+
+h2{
+    font-family: "Agbalumo", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#result {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#message {
+    font-size: 16px;
+    color: #5e5d5d;
+}
+
+#downloadLink {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+#downloadLink:hover {
+    color: #0056b3;
+}
+
+.pic1{
+    position: absolute;
+    top: 90px;
+    right: -100px;
+    width: 800px;
+    height: 800px;
+    z-index: -2;
+}

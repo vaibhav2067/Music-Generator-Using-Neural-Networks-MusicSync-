@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Sync</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Agbalumo&display=swap');
+    </style>
+</head>
+<body>
+    <h1>Music Sync</h1>
+    <div class="container">
+        <form id="musicForm" action="/generate-music" method="POST">
+            <h2>Generate your tune</h2>
+            <div class="form-group">
+                <label for="genre">Select Genre:</label>
+                <select id="genre" name="genre">
+                    <option value="">Select ......</option>
+                    <option value="Classic">Classic</option>
+                    <option value="Pop">Pop</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="temperature">Select Randomness (Temperature):</label>
+                <input type="number" id="temperature" name="temperature" step="0.1" min="0.1" max="10" value="1.0">
+                <small>Recommended Range: 0.5 - 2.0</small>
+            </div>
+
+            <button type="submit" class="btn">Generate Music</button>
+        </form>
+
+        <div id="result">
+            <p id="message">Music will be generated here after submission...</p>
+            <a id="downloadLink" style="display:none;" href="#">Download Generated Music</a>
+        </div>
+    </div>
+    <img class="pic1" src="static\music_bg.jpg" alt="">
+
+
+
+
+
+    <script>
+        document.getElementById('musicForm').onsubmit = async function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const genre = formData.get('genre');
+            const temperature = formData.get('temperature');
+
+            const response = await fetch('/generate-music', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            const messageEl = document.getElementById('message');
+            const downloadLink = document.getElementById('downloadLink');
+
+            if (result.success) {
+                messageEl.textContent = "Music generation successful!";
+                downloadLink.href = result.fileUrl;
+                downloadLink.style.display = 'block';
+                downloadLink.textContent = "Download Generated Music";
+            } else {
+                messageEl.textContent = "Error generating music: " + result.error;
+            }
+        };
+    </script>
+</body>
+</html>
