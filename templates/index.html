@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Sync</title>
+
+    <!-- Linking external Google Fonts -->
     <link rel="stylesheet" href="static\styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap');
@@ -11,10 +13,25 @@
     </style>
 </head>
 <body>
+    <!-- Upper section with Dark Mode Toggle and Google Sign-In button -->
+    <div class="upr">
+        <div class="dark-mode-toggle">
+            <button id="toggleDarkMode">Toggle Dark Mode</button>
+        </div>
+        <div class="auth-btn-container">
+            <button class="btnr" id="googleSignIn"></button>
+        </div>
+    </div>
+
+    <!-- Main Title -->
     <h1>Music Sync</h1>
+
     <div class="container">
+        <!-- Music Generation Form -->
         <form id="musicForm" action="/generate-music" method="POST">
             <h2>Generate your tune</h2>
+
+            <!-- Genre Selection -->
             <div class="form-group">
                 <label for="genre">Select Genre:</label>
                 <select id="genre" name="genre">
@@ -24,33 +41,44 @@
                 </select>
             </div>
 
+            <!-- Temperature Selection -->
             <div class="form-group">
                 <label for="temperature">Select Randomness (Temperature):</label>
                 <input type="number" id="temperature" name="temperature" step="0.1" min="0.1" max="10" value="1.0">
                 <small>Recommended Range: 0.5 - 2.0</small>
             </div>
 
+            <!-- Submit Button -->
             <button type="submit" class="btn">Generate Music</button>
         </form>
 
+        <!-- Result Display -->
         <div id="result">
             <p id="message">Music will be generated here after submission...</p>
             <a id="downloadLink" style="display:none;" href="#">Download Generated Music</a>
         </div>
     </div>
-    <img class="pic1" src="static\music_bg.jpg" alt="">
 
+    <!-- Background Image -->
+    <img id="pic1" src="static\music_bg1.png" alt="">
 
-
-
-
+    <!-- Google Sign-In Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
+        // Dark Mode Toggle Functionality
+        const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+        toggleDarkModeButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Music Generation Form Submission
         document.getElementById('musicForm').onsubmit = async function (event) {
             event.preventDefault();
             const formData = new FormData(event.target);
             const genre = formData.get('genre');
             const temperature = formData.get('temperature');
 
+            // Making POST request to generate music
             const response = await fetch('/generate-music', {
                 method: 'POST',
                 body: formData
@@ -69,6 +97,37 @@
                 messageEl.textContent = "Error generating music: " + result.error;
             }
         };
+
+        // Google Sign-In Response Handling
+        function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        // Send this credential to the backend for verification
+        fetch('/google-signin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ credential: response.credential })
+        }).then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  alert("Signed in successfully!");
+                  // Optionally redirect or refresh UI
+              } else {
+                  alert("Sign-in failed!");
+              }
+          });
+    }
+
+    // Load the Google Sign-In button
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById('googleSignIn'),
+            { theme: "outline", size: "large"} // Button customization options
+        );
+    };
     </script>
 </body>
 </html>

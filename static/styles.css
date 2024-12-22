@@ -1,21 +1,70 @@
+
+/* Reset overflow to hidden */
 *{
     overflow: hidden;
 }
 
-
+/* General Body Styles */
 body{
     background-color: #F7FAEF;
 }
 
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #080510;
+    color: #e0e0e0;
+}
+
+/* Upper Section: Dark Mode Toggle and Auth Button */
+.upr{
+    margin: 0;
+    position: absolute;
+    right: 20px;
+    display: flex;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    text-align: right;
+    padding: 10px;
+}
+
+.dark-mode-toggle button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dark-mode-toggle button:hover {
+    background-color: #666;
+}
+
+/* Authentication Button Container */
+.auth-btn-container{
+    width: 70px;
+    
+}
+
+.btnr{
+    width: 66%;
+    padding: 0;
+    border-radius: 20px;
+}
+
+/* Main Title Styles */
 h1{
     /* font-weight: bold; */
     font-size: 3rem;
-    margin: 80px ;
+    margin: 60px ;
     font-family: "ADLaM Display", system-ui;
     font-weight: 400;
     font-style: normal
 }
 
+/* Container for the Form */
 .container{
     border: 2px solid black;
     margin: 0px 260px;
@@ -24,10 +73,12 @@ h1{
     backdrop-filter: blur(5px);
 }
 
+/* Music Form Styles */
 #musicForm{
     margin: 0px 20px;
 }
 
+/* Form Group Styles */
 .form-group {
     margin-bottom: 20px;
 }
@@ -41,10 +92,10 @@ h1{
 
 .form-group select,
 .form-group input {
-    width: 100%;
+    width: 50%;
     padding: 12px;
     font-size: 16px;
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -56,6 +107,7 @@ small {
     color: #707070;
 }
 
+/* Submit Button Styles */
 .btn {
     width: 100%;
     padding: 12px;
@@ -73,12 +125,14 @@ small {
     background-color: #50e785;
 }
 
+/* Header for Music Generation Form */
 h2{
     font-family: "Agbalumo", system-ui;
     font-weight: 400;
     font-style: normal;
 }
 
+/* Result Display Section */
 #result {
     margin-top: 30px;
     text-align: center;
@@ -100,11 +154,18 @@ h2{
     color: #0056b3;
 }
 
-.pic1{
+/* Background Image Styling */
+#pic1{
     position: absolute;
     top: 90px;
     right: -100px;
     width: 800px;
     height: 800px;
     z-index: -2;
+    transition: filter 0.3s ease;
+}
+
+/* Optional Dark Mode Styling for Background Image */
+body.dark-mode #pic1{
+    filter: invert(100%);
 }

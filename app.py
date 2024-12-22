@@ -5,6 +5,8 @@ import pretty_midi
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Embedding
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 app = Flask(__name__)
 
@@ -109,6 +111,25 @@ def sequence_to_midi(sequence, output_file):
 
     midi.instruments.append(instrument)
     midi.write(output_file)
+
+@app.route('/google-signin', methods=['POST'])
+def google_signin():
+    data = request.json
+    token = data.get('credential')
+    try:
+        # Specify the CLIENT_ID of the app that accesses the backend
+        CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        
+        # ID token is valid
+        user_id = idinfo['sub']
+        email = idinfo['email']
+        name = idinfo['name']
+        # Handle the authenticated user (e.g., save to the database)
+        return jsonify(success=True, user={"id": user_id, "email": email, "name": name})
+    except ValueError:
+        # Invalid token
+        return jsonify(success=False), 400
 
 # Serve index.html
 @app.route('/')
