@@ -1,11 +1,10 @@
-
 /* Reset overflow to hidden */
-*{
+* {
     overflow: hidden;
 }
 
 /* General Body Styles */
-body{
+body {
     background-color: #F7FAEF;
 }
 
@@ -16,66 +15,95 @@ body.dark-mode {
 }
 
 /* Upper Section: Dark Mode Toggle and Auth Button */
-.upr{
+.upr {
     margin: 0;
     position: absolute;
     right: 20px;
     display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 /* Dark Mode Toggle Button */
 .dark-mode-toggle {
     text-align: right;
     padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.05);
 }
 
 .dark-mode-toggle button {
-    background-color: #444;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg-color, #F7FAEF);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.dark-mode-toggle button:hover {
-    background-color: #666;
+#toggleDarkMode svg {
+    fill: black;
+}
+
+#toggleDarkMode svg:last-child{
+    display: none;
+}
+
+.dark-mode #toggleDarkMode svg:first-child{
+    display: none;
+}
+
+.dark-mode #toggleDarkMode svg:last-child{
+    display: block;
 }
 
 /* Authentication Button Container */
-.auth-btn-container{
+.auth-btn-container {
     width: 70px;
-    
 }
 
-.btnr{
+.btnr {
     width: 66%;
     padding: 0;
     border-radius: 20px;
 }
 
 /* Main Title Styles */
-h1{
-    /* font-weight: bold; */
+h1 {
     font-size: 3rem;
-    margin: 60px ;
+    margin: 60px;
     font-family: "ADLaM Display", system-ui;
     font-weight: 400;
-    font-style: normal
 }
 
 /* Container for the Form */
-.container{
+.container {
+    position: relative;
     border: 2px solid black;
-    margin: 0px 260px;
-    background-color: #e0edbdad ;
+    left: 0px;
+    width: 60%;
+    margin: 0px 240px;
+    max-width: 1200px;
+    background-color: #e0edbdad;
     border-radius: 16px;
     backdrop-filter: blur(5px);
 }
 
+/* Dark Mode Container Styles */
+body.dark-mode .container {
+    background-color: #282a218b;
+    color: #e0e0e0;
+    border: 2px solid #444;
+}
+
 /* Music Form Styles */
-#musicForm{
-    margin: 0px 20px;
+#musicForm {
+    margin: 0 20px;
 }
 
 /* Form Group Styles */
@@ -90,12 +118,24 @@ h1{
     margin-bottom: 5px;
 }
 
-.form-group select,
-.form-group input {
+body.dark-mode .form-group label {
+    color: #828c70;
+}
+
+.form-group select{
     width: 50%;
     padding: 12px;
     font-size: 16px;
-    border: 1px solid #ffffff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group input {
+    width: 47%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #fff;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -109,16 +149,27 @@ small {
 
 /* Submit Button Styles */
 .btn {
-    width: 100%;
+    width: 40%;
+    margin: 0 44px 10px ;
     padding: 12px;
     background-color: #e7f1cd;
     color: #424636;
     font-size: 18px;
     text-align: center;
-    border: none;
+    border: 1px solid black;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+body.dark-mode .btn {
+    background-color: #484b3e75;
+    color: #dbe6b9;
+}
+
+body.dark-mode .btn:hover {
+    background-color: #b7cd6ccf;
+    color: #dbe6b9;
 }
 
 .btn:hover {
@@ -126,10 +177,9 @@ small {
 }
 
 /* Header for Music Generation Form */
-h2{
+h2 {
     font-family: "Agbalumo", system-ui;
     font-weight: 400;
-    font-style: normal;
 }
 
 /* Result Display Section */
@@ -155,7 +205,7 @@ h2{
 }
 
 /* Background Image Styling */
-#pic1{
+#pic1 {
     position: absolute;
     top: 90px;
     right: -100px;
@@ -165,7 +215,73 @@ h2{
     transition: filter 0.3s ease;
 }
 
-/* Optional Dark Mode Styling for Background Image */
-body.dark-mode #pic1{
+body.dark-mode #pic1 {
     filter: invert(100%);
+}
+
+/* Social Icons Popup */
+#social-icons-popup {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 1000;
+}
+
+/* Social Media Buttons */
+.social-btn {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 200px;
+}
+
+.social-btn img {
+    margin-right: 10px;
+}
+
+.social-btn:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+/* Share Button */
+#share-music {
+    width: 100%;
+    padding: 12px;
+    background-color: #3b5998;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#share-music:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#share-music:hover {
+    background-color: #2d4373;
+    color: white;
+}
+
+/* Progress Bar */
+#progress-bar {
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
 }

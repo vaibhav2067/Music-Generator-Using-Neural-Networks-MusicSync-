@@ -1,0 +1,673 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden;
+}
+
+.navbar {
+    display: flex;
+    position: sticky;
+    align-items: center;
+    justify-content: space-between;
+    top: 0px;
+    background: #F7FAEF;
+    background-blend-mode: darken;
+    background-size: cover;
+    color: white;
+    padding: 10px 20px;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+}
+
+.nav-list li {
+    margin-right: 20px;
+}
+
+.nav-list li:last-child {
+    margin-right: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-list li a:hover {
+    color: #cbf72b;
+    /* Change the color on hover */
+}
+
+.rightNav {
+    text-align: right;
+}
+
+#search {
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+}
+
+.btn {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #000;
+    /* Change the background color on hover */
+    color: #ffd700;
+}
+
+
+/* ---------------------------------------------------------------------- */
+
+.container{
+    position: relative;
+    /* width: max-content; */
+    /* width: 100vw; */
+}
+
+.header-image{
+    width: 99vw; 
+    height: 100vh; 
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Horizontally centers the content */
+    align-items: center; /* Vertically centers the content */
+    height: 100vh; /* Matches the full viewport height */
+    position: relative; /* Ensures proper positioning for layering */
+    z-index: 1; /* Ensures the text appears above the background image */
+    text-align: center; /* Centers text content inside the container */
+    animation: slideInScale 1s ease-out;
+  }
+  
+  h1 {
+    font-size: 5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 1rem; /* Optional: adds readability */
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: rgb(90, 90, 90);
+    /* text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); */
+    margin-bottom: 2rem; /* Spacing between paragraph and button */
+    max-width: 600px; /* Optional: Limits paragraph width for better readability */
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    background-color: #007BFF; /* Primary button color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarges on hover */
+  }
+
+
+  .wnd-hero {
+    position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, #edffbb, #F7FAEF, #ecffb8, #d6ff66);
+  background-size: 300% 300%;
+  animation: gradientShift 10s ease infinite;
+  overflow: hidden; /* Prevents shapes from showing outside */
+  padding: 2rem;
+  }
+  
+  .wnd-container {
+    display: flex;
+    width: 80%; /* Controls the width of the section */
+    max-width: 1200px; /* Limits the maximum width */
+    gap: 6rem; /* Space between the left and right boxes */
+    z-index: 2;
+  }
+  
+  /* Left Box Styles */
+  .left-box {
+    flex: 1; /* Takes up equal space */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center; /* Center content vertically */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .left-box h2 {
+    font-size: 2.5rem;
+    color: #333; /* Darker text for better contrast */
+    margin-bottom: 1rem;
+  }
+  
+  .left-box p {
+    font-size: 1.2rem;
+    color: #555; /* Slightly lighter text color */
+  }
+  
+  /* Right Box Styles */
+  .right-box {
+    flex: 1;
+  display: flex;
+  justify-content: center;
+  }
+  
+  .wnd-image {
+    width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
+  }
+
+ /* Abstract Shapes */
+.abstract-circle{
+    position: absolute;
+    opacity: 0.6; /* Increased opacity for better visibility */
+    animation: float 6s ease-in-out infinite;
+  }
+
+.abstract-square {
+    position: absolute;
+    opacity: 0.6; /* Increased opacity for better visibility */
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .abstract-circle {
+    border-radius: 50%;
+    background: #849e3d30; /* Brighter white for circles */
+    box-shadow: 0px 8px 15px rgba(255, 255, 255, 0.4); /* Adds glow effect */
+  }
+  
+  .abstract-square {
+    background: rgba(0, 0, 0, 0.3); /* Darker shade for squares */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    animation: rotate 8s linear infinite, float 6s ease-in-out infinite;
+  }
+  
+  /* Specific Shapes with Increased Sizes */
+  .abstract-circle:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 10%;
+  }
+  
+  .abstract-circle:nth-child(2) {
+    width: 350px;
+    height: 350px;
+    top: 60%;
+    left: 65%;
+  }
+  
+  .abstract-square:nth-child(1) {
+    width: 250px;
+    height: 250px;
+    top: 30%;
+    left: 35%;
+  }
+  
+  .abstract-square:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    top: 75%;
+    left: 15%;
+  }
+
+
+  .gnd-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #effec4;
+    color: white;
+    padding: 100px 20px;
+  }
+  
+  .gnd-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+  }
+  
+  .top-box img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  .bottom-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .bottom-box h3 {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0;
+    color: #3d3d3d;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 10px;
+  }
+
+  .about-hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    background: #f6ffde;
+    color: rgb(0, 0, 0);
+    padding: 50px 20px;
+    min-height: 60vh;
+  }
+  
+  .about-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .top-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    /* text-transform: uppercase; */
+  }
+  
+  .top-paragraph {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    font-weight: 300;
+    margin: 0;
+    color: #474747;
+  }
+
+  .contribute-hero {
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background-color: #effec4;
+    color: #333;
+  }
+  
+  .contribute-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    width: 100%;
+    gap: 8rem;
+  }
+  
+  .left-contributebox {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .contribute-call {
+    font-size:2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000000;
+  }
+  
+  .left-contributebox p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  
+  .left-contributebox button {
+    background-color: #2d89ff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .left-contributebox button:hover {
+    background-color: #0056cc;
+  }
+  
+  .right-contributebox {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .right-contributebox img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .site-footer {
+    background-color: #414632;
+    color: white;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: 0 auto;
+    gap: 30px;
+  }
+  
+  .footer-column {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .footer-column h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+  }
+  
+  .footer-column p,
+  .footer-column ul {
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+    color: #909090;
+  }
+  
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+    
+  }
+  
+  .footer-column li {
+    margin-bottom: 10px;
+    
+  }
+  
+  .footer-column a {
+    color: #dcdcdc;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-column a:hover {
+    color: #8e8e8e;
+  }
+  
+  /* Social Links */
+  .social-links {
+    display: flex;
+    gap: 15px;
+    padding: 0;
+  }
+  
+  .social-links img {
+    width: 24px;
+    height: 24px;
+    /* filter: invert(100%); */
+    transition: transform 0.3s ease;
+  }
+  
+  .social-links img:hover {
+    transform: scale(1.2);
+  }
+  
+  /* Footer Bottom */
+  .footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 12px;
+    color: #dcdcdc;
+  }
+  
+  .footer-bottom p {
+    margin: 5px 0;
+    font-size: 12px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Keyframe Animation */
+  @keyframes slideInScale {
+    from {
+      transform: translateY(100%) scale(1.5); /* Start from below the screen and scaled up */
+      opacity: 0; /* Start invisible */
+    }
+    to {
+      transform: translateY(0) scale(1); /* End at its original position and original size */
+      opacity: 1; /* Fully visible */
+    }
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px); /* Slightly more movement for visibility */
+    }
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 768px) {
+    .header-container {
+      padding: 1rem; /* Adds padding for smaller screens */
+    }
+  
+    h1 {
+      font-size: 2rem; /* Reduces font size for smaller screens */
+    }
+  
+    p {
+      font-size: 1rem; /* Adjusts paragraph text size */
+      margin-bottom: 1.5rem; /* Adjusts spacing for smaller screens */
+    }
+  
+    button {
+      font-size: 0.9rem; /* Reduces button text size */
+      padding: 0.6rem 1.2rem; /* Makes button slightly smaller */
+    }
+
+    .wnd-container {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+        gap: 1rem;
+      }
+    
+      .left-box, .right-box {
+        flex: none; /* Removes flex growth */
+        width: 100%; /* Full width for smaller screens */
+      }
+    
+      .wnd-image {
+        max-width: 100%; /* Ensures the image scales with the screen */
+      }
+      
+      .top-box img {
+        max-width: 90%;
+      }
+    
+      .bottom-box h3 {
+        font-size: 16px;
+      }
+
+      .top-heading {
+        font-size: 28px;
+      }
+    
+      .top-paragraph {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .contribute-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+    
+      .left-contributebox, 
+      .right-contributebox {
+        flex: unset;
+      }
+    
+      .contribute-call {
+        font-size: 28px;
+      }
+    
+      .left-contributebox p {
+        font-size: 14px;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .footer-column {
+        flex: none;
+      }
+  }
+  
+  @media (max-width: 480px) {
+    .header-container {
+      padding: 0.5rem; /* Further reduces padding for very small screens */
+    }
+  
+    h1 {
+      font-size: 1.5rem; /* Further reduces heading size */
+    }
+  
+    p {
+      font-size: 0.9rem; /* Further adjusts paragraph text size */
+    }
+  
+    button {
+      font-size: 0.8rem; /* Further reduces button size */
+      padding: 0.5rem 1rem; /* Shrinks button padding */
+    }
+  }

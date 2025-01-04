@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, Response
+from flask_socketio import SocketIO, emit
+import time
 import os
 import numpy as np
 import pretty_midi
@@ -9,6 +11,8 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 app = Flask(__name__)
+socketio = SocketIO(app)
+
 
 # Parameters
 vocab_size = 128
@@ -131,14 +135,22 @@ def google_signin():
         # Invalid token
         return jsonify(success=False), 400
 
-# Serve index.html
+# Serve start
 @app.route('/')
-def index():
+def home():
+    return render_template('home.html')
+
+@app.route('/get-started')
+def get_started():
     return render_template('index.html')
+
+# Mock for canceling music generation
+generation_cancelled = False
 
 # Route to generate music
 @app.route('/generate-music', methods=['POST'])
 def generate_music_route():
+    global generation_cancelled
     try:
         genre = request.form['genre']
         temperature = float(request.form['temperature'])
@@ -157,12 +169,31 @@ def generate_music_route():
 
         # Generate music
         seed_sequence = X_train[np.random.randint(0, len(X_train))]
-        generated_sequence = generate_music(model, seed_sequence, temperature=temperature)
+        total_steps = 10
+        for step in range(total_steps):
+            if generation_cancelled:
+                break  # Stop generating if canceled
+            
+            # Simulate music generation step by step
+            time.sleep(0.1)  # Simulate processing time for each step
+            progress = (step + 1) * 10  # Update progress (10%, 20%, ..., 100%)
+            
+            # Emit progress via SocketIO
+            socketio.emit('progress_update', {
+                'progress': progress,
+                'message': f"Generating... {progress}%",
+                'fileUrl': '/download/generated_music.mid'
+            })
 
-        output_file = 'generated_music.mid'
-        sequence_to_midi(generated_sequence, output_file)
+        if not generation_cancelled:
+            generated_sequence = generate_music(model, seed_sequence, temperature)
+            output_file = 'generated_music.mid'
+            sequence_to_midi(generated_sequence, output_file)
 
-        return jsonify(success=True, fileUrl=f"/download/{output_file}")
+            return jsonify(success=True, fileUrl=f"/download/{output_file}")
+
+        else:
+            return jsonify(success=False, error="Generation was canceled")
 
     except Exception as e:
         return jsonify(success=False, error=str(e))
@@ -171,6 +202,13 @@ def generate_music_route():
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_file(filename, as_attachment=True)
+
+# Route to cancel the generation process
+@app.route('/cancel-generation', methods=['POST'])
+def cancel_generation():
+    global generation_cancelled
+    generation_cancelled = True
+    return jsonify(success=True)
  
 if __name__ == '__main__':
     app.run(debug=True)

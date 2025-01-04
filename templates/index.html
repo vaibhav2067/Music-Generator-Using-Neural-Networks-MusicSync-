@@ -6,7 +6,7 @@
     <title>Music Sync</title>
 
     <!-- Linking external Google Fonts -->
-    <link rel="stylesheet" href="static\styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Agbalumo&display=swap');
@@ -16,7 +16,10 @@
     <!-- Upper section with Dark Mode Toggle and Google Sign-In button -->
     <div class="upr">
         <div class="dark-mode-toggle">
-            <button id="toggleDarkMode">Toggle Dark Mode</button>
+            <button id="toggleDarkMode">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/></svg>
+            </button>
         </div>
         <div class="auth-btn-container">
             <button class="btnr" id="googleSignIn"></button>
@@ -52,18 +55,45 @@
             <button type="submit" class="btn">Generate Music</button>
         </form>
 
-        <!-- Result Display -->
-        <div id="result">
-            <p id="message">Music will be generated here after submission...</p>
-            <a id="downloadLink" style="display:none;" href="#">Download Generated Music</a>
+        <div id="progress-container" style="display: none;">
+            <p id="progress-message">Generating music...</p>
+            <progress id="progress-bar" value="0" max="100"></progress>
+        </div>  
+        <button type="button" id="cancelBtn" style="display: none;">Cancel</button>
+      
+
+        <!-- Download Link -->
+        <div id="download-container" style="display: none;">
+            <a id="download-link" href="" download>Download Generated Music</a>
         </div>
+
+        <!-- Share Button -->
+        <div id="share-container" style="display: block;">
+            <button id="share-music" disabled>Share Music</button>
+
+            <!-- Social Media Icons Popup -->
+            <div id="social-icons-popup" style="display: none;">
+                <button class="social-btn" id="facebook-share">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" width="30" height="30">
+                    Facebook
+                </button>
+                <button class="social-btn" id="twitter-share">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Twitter_Logo_2021.svg" alt="Twitter" width="30" height="30">
+                    Twitter
+                </button>
+                <!-- Add other platforms as needed -->
+            </div>
+        </div>
+
     </div>
 
     <!-- Background Image -->
-    <img id="pic1" src="static\music_bg1.png" alt="">
+    <img id="pic1" src="static/music_bg1.png" alt="">
 
     <!-- Google Sign-In Script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script>
         // Dark Mode Toggle Functionality
         const toggleDarkModeButton = document.getElementById('toggleDarkMode');
@@ -71,32 +101,107 @@
             document.body.classList.toggle('dark-mode');
         });
 
-        // Music Generation Form Submission
+        //share mode
+        document.getElementById('share-music').addEventListener('click', function() {
+            // Toggle visibility of the social icons popup
+            if (!this.disabled) {
+                const socialIconsPopup = document.getElementById('social-icons-popup');
+                socialIconsPopup.style.display = socialIconsPopup.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        // Social Media Sharing
+        document.getElementById('facebook-share').addEventListener('click', function() {
+            const musicUrl = document.getElementById('download-link').href;
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(musicUrl)}`;
+            window.open(facebookUrl, '_blank', 'width=600,height=400');
+        });
+
+        document.getElementById('twitter-share').addEventListener('click', function() {
+            const musicUrl = document.getElementById('download-link').href;
+            const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(musicUrl)}&text=Check%20out%20my%20generated%20music!`;
+            window.open(twitterUrl, '_blank', 'width=600,height=400');
+        });
+
+
+        var socket = io.connect('http://127.0.0.1:5000');
+
+        // Listen for progress updates from the server
+        socket.on('progress_update', function(data) {
+            // Update the progress bar and message
+            document.getElementById('progress-bar').value = data.progress;
+            document.getElementById('progress-message').textContent = data.message;
+
+            // Show the download link when generation is complete
+            if (data.progress === 100) {
+                document.getElementById('download-container').style.display = 'block';
+                document.getElementById('download-link').href = data.fileUrl;
+
+                // Enable the Share Music button after generation is complete
+                document.getElementById('share-music').disabled = false;
+            }
+        });
+
+        // Music Generation Form Submission with Real-Time Progress
         document.getElementById('musicForm').onsubmit = async function (event) {
             event.preventDefault();
             const formData = new FormData(event.target);
+            
             const genre = formData.get('genre');
             const temperature = formData.get('temperature');
+            
+            // Show the progress container and initialize progress elements
+            const progressContainer = document.getElementById('progress-container');
+            progressContainer.style.display = 'block';
+            const progressBar = document.getElementById('progress-bar');
+            const progressMessage = document.getElementById('progress-message');
+            const cancelBtn = document.getElementById('cancelBtn');
+            cancelBtn.style.display = 'inline';  // Show the cancel button
+            
+            let cancelMusicGeneration = false;
+            
+            // Listen for progress updates via SSE
+            const eventSource = new EventSource('/generate-music-progress');
+            
+            eventSource.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                
+                // Update the progress bar and message
+                progressBar.value = data.progress;
+                progressMessage.textContent = data.message;
 
-            // Making POST request to generate music
+                // If progress reaches 100%, stop listening to the events
+                if (data.progress === 100) {
+                    eventSource.close(); // Close SSE connection
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = data.fileUrl;
+                    downloadLink.style.display = 'block';
+                    downloadLink.textContent = "Download Generated Music";
+                }
+
+                // If the user cancels the generation
+                if (cancelMusicGeneration) {
+                    eventSource.close();
+                    progressMessage.textContent = 'Generation canceled';
+                    return;
+                }
+            };
+
+            // Cancel button logic
+            cancelBtn.onclick = function() {
+                cancelMusicGeneration = true;
+                // Optionally, send a cancel request to the server if you want to stop the backend process.
+                // For example:
+                fetch('/cancel-generation', { method: 'POST' });
+            };
+            
+            // Send the request to start the music generation
             const response = await fetch('/generate-music', {
                 method: 'POST',
                 body: formData
             });
-
-            const result = await response.json();
-            const messageEl = document.getElementById('message');
-            const downloadLink = document.getElementById('downloadLink');
-
-            if (result.success) {
-                messageEl.textContent = "Music generation successful!";
-                downloadLink.href = result.fileUrl;
-                downloadLink.style.display = 'block';
-                downloadLink.textContent = "Download Generated Music";
-            } else {
-                messageEl.textContent = "Error generating music: " + result.error;
-            }
         };
+
 
         // Google Sign-In Response Handling
         function handleCredentialResponse(response) {
@@ -115,19 +220,19 @@
                   alert("Sign-in failed!");
               }
           });
-    }
+        }
 
-    // Load the Google Sign-In button
-    window.onload = function () {
-        google.accounts.id.initialize({
-            client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById('googleSignIn'),
-            { theme: "outline", size: "large"} // Button customization options
-        );
-    };
+        // Load the Google Sign-In button
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignIn'),
+                { theme: "outline", size: "large"} // Button customization options
+            );
+        };
     </script>
 </body>
 </html>
