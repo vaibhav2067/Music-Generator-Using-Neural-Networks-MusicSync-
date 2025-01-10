@@ -9,20 +9,24 @@
   <body>
     <nav class="navbar">
       <ul class="nav-list">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <img class="logo" src="./static/Group 11.png" alt="">
       </ul>
       <div class="rightNav">
-        <input type="text" name="search" id="search" placeholder="Search" />
-        <button class="btn btn-sm">Search</button>
+        <ul class="nav-list">
+          <!-- <img class="logo" src="" alt=""> -->
+          <li><a href="#container">Home</a></li>
+          <li><a href="#about-hero">About Us</a></li>
+          <!-- <li><a href="#services">Services</a></li> -->
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+        <!-- <input type="text" name="search" id="search" placeholder="Search" />
+        <button class="btn btn-sm">Search</button> -->
       </div>
     </nav>
 
 
     <hero>
-      <div class="container">
+      <div id="container">
         <img class="header-image" src="./static/untitled.png" alt="" />
         <div class="header-container">
           <h1>Sync Your Sound With AI</h1>
@@ -71,7 +75,7 @@
     </div>
 
 
-    <div class="about-hero">
+    <div id="about-hero">
       <div class="about-container">
         <h2 class="top-heading">
           About Us
@@ -92,7 +96,7 @@
           <p>
             Are you a developer passionate about artificial intelligence and music? We believe that innovation thrives on collaboration, and we’re always looking for talented individuals to contribute to our music generator project.<br>Our GitHub repository is the heart of our development. Fork, clone, or open a pull request to start contributing today.
           </p>
-          <button type="button">Contribute Now!</button>
+          <button type="button" onclick="window.location.href = 'https://github.com/vaibhav2067/Music-Generator-Using-Neural-Networks';">Contribute Now!</button>
         </div>
         <div class="right-contributebox">
           <img src="./static/github.com_vaibhav2067_Music-Generator-Using-Neural-Networks(high res) (1).png" alt="">
